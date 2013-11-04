@@ -23,7 +23,7 @@ function Armature(params)
 			 if (slides[set] === undefined) 
 				slides[set] = [];
 			 
-			 slides[set][state] = '#' + el.textContent.trim().split(',').join(',#');
+			 slides[set][state] = '#' + el.textContent.split(' ').join('').split(',').join(',#');
 
 		 });
 		 
@@ -34,9 +34,12 @@ function Armature(params)
 			items.push(slides[set])
 		 }
 		 
-		 armature.rotator = new Rotator(slides, function(previous,current)
+		 armature.rotator = new Rotator(items, function(previous,current)
 		{
+			
 			var slide=armature.rotator.current();
+			console.log(slide['off']);
+			console.log(slide['on']);
 			$(slide['off']).hide();
 			$(slide['on']).show();
 		});
