@@ -29,6 +29,15 @@ class Armature(inkex.Effect):
 		self.OptionParser.add_option("",   "--activeLayerSet", action="store", type="string", dest="activeLayerSet", default="",	help="Sets active layer set.")
 		
 	def effect(self):
+		#inkex.errormsg('SVG FILE: %s' % self.svg_file)		
+		#outfile = os.path.join(os.path.dirname(self.svg_file), 'stuff.html')		
+		#stream= open(outfile,"w");
+		#svg = self.document.getroot() 
+		#stream.write( inkex.etree.tostring( svg ) )
+		#stream.close()	
+		#inkex.errormsg( "File written:" + os.path.join(os.path.dirname(self.svg_file)) )
+		#return
+		
 		#why does active_tab have quotes? Who knows.
 		self.activeTab =  str(self.options.active_tab).replace('"','') 
 		if self.activeTab=='createLayerSetPage':
@@ -40,11 +49,8 @@ class Armature(inkex.Effect):
 			#track down those data notes, then toggle them
 			for dataNode in dataNodes:
 				 data=parseStyle( dataNode.get( inkex.addNS('label', 'inkscape')) )
-				 inkex.errormsg('done gone toggle %r:' % dataNode.text)
 				 layers =  dataNode.text.split(',')
 				 self.toggleLayers(layers,data['state']=='on')
-					
-			inkex.errormsg('Toggled em.')
 		else:
 			inkex.errormsg('Please enter a layerset name to select.')
 	 
@@ -52,7 +58,6 @@ class Armature(inkex.Effect):
 	#effect specific implementation
 	def toggleLayers(self, layers, state):
 		display='inline'
-		messages=''
 		if not state: display='none'
 		for layer in layers:
 			el=self.getElementById( layer.strip())
@@ -62,7 +67,6 @@ class Armature(inkex.Effect):
 				style['display'] = display
 				el.set('style',formatStyle(style))
 
-		inkex.errormsg(messages)	
 	#render SVG UI
 	def startRendering(self):
 		self.cursorY = 310
@@ -72,7 +76,7 @@ class Armature(inkex.Effect):
 		
 		#draw the UI and create layers, if it's not been done yet
 		self.renderArmatureUI()
-
+		
 		if not self.options.newLayerSet is None:
 			#find out what the state of the layers are
 			layerInfo=self.getLayerInfo()
