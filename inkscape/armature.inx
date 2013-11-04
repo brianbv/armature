@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Gcodetools: header block -->
+<inkscape-extension>
+    <name>Armature</name>
+    <id>org.bv.armature</id>
+     
+	<dependency type="executable" location="extensions">armature.py</dependency>
+	<dependency type="executable" location="extensions">inkex.py</dependency>
+	<param name="active-tab" type="notebook">
+	   <page name='createLayerSetPage' _gui-text="Create/Update Layer Set">
+			<param name="newLayerSet" type="string" _gui-text="Layer Set Name"></param>
+	   </page>
+	   <page name='activeLayerSetPage' _gui-text="Activate Layer Set">
+			<param name="activeLayerSet" type="string" _gui-text="Layer Set Name"></param>
+	   </page>
+ 
+	</param>	
+    <effect needs-live-preview="false">
+		<object-type>all</object-type>
+    </effect>
+    <script>
+        <command reldir="extensions" interpreter="python">armature.py</command>
+    </script>
+</inkscape-extension>
+<!-- Gcodetools: /footer block -->
