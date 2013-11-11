@@ -146,40 +146,15 @@ class Armature(inkex.Effect):
 		title.set('style', formatStyle(ArmatureRowLabelStyle))
 		title.set('x', '20' )
 		title.set('y', str(self.cursorY))
+		title.set('class','data-node')
 		 # title.get('height')
 		title.text=layerSetId
-		title.set( inkex.addNS('label', 'inkscape'), formatStyle( {'set' : layerSetId } ) )
-		
-		layerSetId=layerSetId.replace(' ','')
-		title.set('id',layerSetId + "_set")
-	 
-		self.cursorY+=20
-		self.renderArmatureRow(layerSetId, 'on','Visible Layers', ', '.join(layerGroup['on']) )
-		
-		self.cursorY+=20
-		self.renderArmatureRow(layerSetId, 'off','Hidden Layers', ', '.join(layerGroup['off']) )
+		style ={'set':layerSetId, 'on': ','.join(layerGroup['on']), 'off' : ','.join(layerGroup['off'])}
+		title.set( inkex.addNS('label', 'inkscape'), formatStyle( style ) )
+																   
+		self.cursorY+=20 
+	
 
-	
-	def renderArmatureRow(self,layerSetId,state, label, data):
-		if data is None or data=='':
-			data = '-'
-		
-		labelNode=inkex.etree.SubElement(self.armatureLayer,'text')
-		labelNode.text = label
-		labelNode.set('x','40')
-		labelNode.set('y',str(self.cursorY))
-		labelNode.set('style', 'font-weight:bold')
-		labelNode.set( inkex.addNS('label', 'inkscape'), formatStyle( {'set' : layerSetId } ) )
-		
-		layerSetInfo = { 'state' : state, 'set' : layerSetId}
-		dataNode = inkex.etree.SubElement(self.armatureLayer,'text')
-		dataNode.set('x','130')
-		dataNode.set('y',str(self.cursorY))
-		dataNode.set('class','data-node '+layerSetId)
-		dataNode.text = data
-		#TODO: possibly change this to use armature namespace
-		dataNode.set( inkex.addNS('label', 'inkscape'), formatStyle(layerSetInfo) ) 
-	
 	def renderArmatureUI(self):
 		armatureContainer = self.getElementById('ArmatureInfo')
 		if armatureContainer is None:
