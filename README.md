@@ -2,6 +2,8 @@ Armature
 ========
 Armature is a wireframing extension for Inkscape.  Armature works by grouping visible and hidden layers into sets.  Each set can be used as a view or slide in your wireframes.
 
+An HTML wrapper allows you to view your wireframes in browsers outside of Inkscape.
+
 Installing
 ---------
 
