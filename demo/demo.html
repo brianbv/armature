@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Armature Wireframes HTML wrapper</title>
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+ <script>
+ function Armature(params)
+{
+	var armature=this;
+	if (params.svgElement!=null) initialize(params.svgElement);
+	
+	$(document).keydown( function(e) {
+		if (e.keyCode == 37)  armature.rotator.previous();
+		else if (e.keyCode == 39)  armature.rotator.next();
+		
+	  });
+	
+	function initialize(svgElement)
+	{
+		$('#ArmatureInfo').hide();
+		var slides=[],
+			items = [];
+		
+		$(svgElement).find('.data-node').each( function(i,el)
+		 {
+			 var $el = $(el),
+				 set = $el.attr('id').split('ArmatureDataNode-')[1],
+				 slideSet=parseData( $el.attr('inkscape:label') );
+				 
+				slideSet['on_ids'] =  '#' + slideSet['on'].split(' ').join('').split(',').join(',#');
+				slideSet['off_ids'] = '#' + slideSet['off'].split(' ').join('').split(',').join(',#');
+				slideSet['set']=slideSet;
+				
+				slides[set] = slideSet;
+				items.push(slideSet);
+		 });
+		 
+
+		 armature.rotator = new Rotator(items, function(previous,current)
+		{
+			
+			var slide=armature.rotator.current();
+			console.log(slide['off_ids']);
+			console.log(slide['on_ids']);
+			$(slide['off_ids']).hide();
+			$(slide['on_ids']).show();
+		});
+	}
+	
+	function parseData(d)
+	{
+		result = [];
+		parts=d.split(';');
+		for (var i=0;i<parts.length;i++){
+		   pair = parts[i].split(':');
+		   result[pair[0]]=pair[1];
+		}
+		return result;
+	}
+ 
+}
+
+function Rotator(items,updateCallback)
+{
+		var rotator=this;
+        this.index = 0;
+        this.items = items;
+        this.updated = updateCallback;
+
+        this.current=function(){ return this.items[this.index]; }
+        this.indicatorText = function() { return (this.index+1).toString() + "/" + (this.items.length).toString(); }
+
+        this.next = function()
+        {
+			var previous = rotator.current();
+            if (this.items==null) return; 
+            if (++this.index>=this.items.length) this.index=0;
+            this.updated(previous,rotator.current());
+        }
+
+        this.previous = function()
+        {
+			var previous = rotator.current();
+            if (this.items==null) return; 
+            if (--this.index<0 && this.items!=null) this.index=this.items.length-1;
+            this.updated(previous,rotator.current());
+        }
+};
+ </script>
+  
+ <style>
+	.svgFrame{width:100%;height:100%;}
+ </style>
+ <script>
+	var armature;
+	$( function()
+	   {
+			armature= new Armature( {svgElement: $('#container svg') } );
+	   });
+ </script>
+ 
+ 
+</head>
+
+
+<body>
+  <div id="container">
+  <svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="744.09448819" height="1052.3622047" id="svg3861" version="1.1" inkscape:version="0.48.4 r9939" sodipodi:docname="C:\Users\Brian\AppData\Local\Temp\ink_ext_XXXXXX.svgDYLT6W">
+  <sodipodi:namedview id="base" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:zoom="1.4142136" inkscape:cx="230.03962" inkscape:cy="730.74049" inkscape:document-units="px" inkscape:current-layer="Overlay" showgrid="false" inkscape:window-width="1920" inkscape:window-height="1177" inkscape:window-x="1358" inkscape:window-y="-8" inkscape:window-maximized="1" showguides="true" inkscape:guide-bbox="true">
+    <sodipodi:guide id="guide6292" position="533.86562,1005.5058" orientation="0,1"/>
+  </sodipodi:namedview>
+  <defs id="defs3863"/>
+  <metadata id="metadata3866">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <dc:title/>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g style="display:inline" id="Site" inkscape:groupmode="layer" inkscape:label="Site">
+    <g style="display:none" inkscape:label="Page2" id="Page2" inkscape:groupmode="layer">
+      <text sodipodi:linespacing="125%" id="text3899-8" y="135.43518" x="22.706604" style="font-size:25.46167564px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Arial" xml:space="preserve"><tspan y="135.43518" x="22.706604" id="tspan3901-8" sodipodi:role="line">Page 2</tspan></text>
+      <rect y="155.75078" x="15.55635" height="284.96402" width="318.90515" id="rect3889-2" style="fill:none;stroke:#ffffff;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"/>
+      <rect y="158.69981" x="19.212481" height="454.34668" width="270.58069" id="rect3891-4" style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"/>
+      <rect y="158.50511" x="600.01782" height="455.73605" width="127.04831" id="rect3891-1-5" style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"/>
+      <rect y="158.69981" x="309.21246" height="454.34668" width="270.58069" id="rect3891-4-1" style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"/>
+    </g>
+    <g style="display:inline" inkscape:label="Page 1" id="Page1" inkscape:groupmode="layer">
+      <text sodipodi:linespacing="125%" id="text3899" y="135.43518" x="22.706604" style="font-size:25.46167564px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial" xml:space="preserve"><tspan y="135.43518" x="22.706604" id="tspan3901" sodipodi:role="line">Page 1</tspan></text>
+      <rect y="155.75078" x="15.55635" height="284.96402" width="318.90515" id="rect3889" style="fill:none;stroke:#ffffff;stroke-width:0.40000001;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"/>
+      <rect y="158.52837" x="19.041039" height="237.68956" width="270.92358" id="rect3891" style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"/>
+      <rect y="158.63672" x="309.14941" height="237.47285" width="417.7851" id="rect3891-1" style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"/>
+      <rect y="417.60413" x="20.10907" height="237.1402" width="705.24487" id="rect3891-1-7" style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"/>
+    </g>
+    <g style="display:none" inkscape:label="Page 3" id="Page3" inkscape:groupmode="layer">
+      <text sodipodi:linespacing="125%" id="text3899-8-6" y="135.43518" x="22.706604" style="font-size:25.46167564px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Arial" xml:space="preserve"><tspan y="135.43518" x="22.706604" id="tspan3901-8-1" sodipodi:role="line">Page 3</tspan></text>
+      <rect y="155.75078" x="15.55635" height="284.96402" width="318.90515" id="rect3889-2-4" style="fill:none;stroke:#ffffff;stroke-width:0.40000001;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"/>
+      <rect y="220.21729" x="19.163912" height="392.86807" width="270.6181" id="rect3891-4-2" style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"/>
+      <rect y="220.34286" x="309.34924" height="392.61694" width="412.34726" id="rect3891-4-1-2" style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"/>
+      <rect y="161.93123" x="20.544418" height="33.157375" width="105.98937" id="rect4075" style="fill:#000000;stroke:#ffffff;stroke-width:0.47664344;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"/>
+      <flowRoot style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial" id="flowRoot4077" xml:space="preserve"><flowRegion id="flowRegion4079"><rect y="125.34519" x="227.68839" height="19.091883" width="14.849242" id="rect4081"/></flowRegion><flowPara id="flowPara4083"/></flowRoot>      <rect y="161.93123" x="140.54442" height="33.157375" width="105.98937" id="rect4075-2" style="fill:#000000;stroke:#ffffff;stroke-width:0.47664344;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"/>
+      <g style="display:inline" inkscape:label="Page 3 - Button Press" id="Page3-ButtonPress" inkscape:groupmode="layer"/>
+      <text sodipodi:linespacing="125%" id="text3899-8-6-9" y="184.46454" x="39.643822" style="font-size:18.37265205px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;display:inline;font-family:Arial" xml:space="preserve"><tspan y="184.46454" x="39.643822" id="tspan3901-8-1-4" sodipodi:role="line">Button1</tspan></text>
+      <text sodipodi:linespacing="125%" id="text3899-8-6-9-8" y="184.16614" x="161.6656" style="font-size:18.37265205px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;display:inline;font-family:Arial" xml:space="preserve"><tspan y="184.16614" x="161.6656" id="tspan3901-8-1-4-8" sodipodi:role="line">Button2</tspan></text>
+    </g>
+  </g>
+  <g inkscape:label="Navigation" id="Navigation" inkscape:groupmode="layer" style="display:inline">
+    <g sodipodi:insensitive="true" inkscape:label="Background" id="layer6" inkscape:groupmode="layer">
+      <rect y="1.801595" x="-0.042597964" height="90.917702" width="745.55743" id="rect3870" style="fill:#808080;fill-opacity:1;stroke:#000000;stroke-width:0.99602473;stroke-opacity:1;display:inline"/>
+    </g>
+    <g style="display:inline" inkscape:label="Menu" id="Menu" inkscape:groupmode="layer">
+      <text sodipodi:linespacing="125%" id="text3872-4-2-54" y="52.372063" x="82.385307" style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Arial" xml:space="preserve"><tspan y="52.372063" x="82.385307" id="tspan3874-0-4-3" sodipodi:role="line" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:Arial">Two</tspan></text>
+      <text sodipodi:linespacing="125%" id="text3872-4-2-5-1" y="52.407761" x="136.26642" style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Arial" xml:space="preserve"><tspan y="52.407761" x="136.26642" id="tspan3874-0-4-5-2" sodipodi:role="line">Three</tspan></text>
+      <text sodipodi:linespacing="125%" id="text3872-4-2-5-4-3" y="52.407749" x="203.51642" style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Arial" xml:space="preserve"><tspan y="52.407749" x="203.51642" id="tspan3874-0-4-5-0-3" sodipodi:role="line">Four</tspan></text>
+      <text sodipodi:linespacing="125%" id="text3872-4-2-5-4-9-4" y="52.407749" x="260.26642" style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Arial" xml:space="preserve"><tspan y="52.407749" x="260.26642" id="tspan3874-0-4-5-0-4-1" sodipodi:role="line">Five</tspan></text>
+      <text sodipodi:linespacing="125%" id="text3872-4" y="52.372063" x="28.284271" style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Arial" xml:space="preserve"><tspan y="52.372063" x="28.284271" id="tspan3874-0" sodipodi:role="line">One </tspan></text>
+    </g>
+    <g style="display:inline" inkscape:label="One - Selected" id="One-Selected" inkscape:groupmode="layer">
+      <text sodipodi:linespacing="125%" id="text3872-4-7" y="52.372063" x="28.284271" style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.40000001;stroke-miterlimit:4;stroke-dasharray:none;display:inline;font-family:Arial" xml:space="preserve"><tspan y="52.372063" x="28.284271" id="tspan3874-0-9" sodipodi:role="line" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:Arial">One </tspan></text>
+    </g>
+    <g style="display:none" inkscape:label="Two - Selected" id="Two-Selected" inkscape:groupmode="layer">
+      <text sodipodi:linespacing="125%" id="text3872-4-8" y="58.372063" x="28.284271" style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;display:none;font-family:Arial" xml:space="preserve"><tspan y="58.372063" x="28.284271" id="tspan3874-0-8" sodipodi:role="line">One </tspan></text>
+      <text sodipodi:linespacing="125%" id="text3872-4-2" y="52.372063" x="82.385307" style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.40000001;stroke-miterlimit:4;stroke-dasharray:none;display:inline;font-family:Arial" xml:space="preserve"><tspan y="52.372063" x="82.385307" id="tspan3874-0-4" sodipodi:role="line">Two</tspan></text>
+    </g>
+    <g style="display:none" inkscape:label="Three - Selected" id="Three-Selected" inkscape:groupmode="layer">
+      <text sodipodi:linespacing="125%" id="text3872-4-2-5" y="52.407761" x="136.26642" style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.40000001;stroke-miterlimit:4;stroke-dasharray:none;display:inline;font-family:Arial" xml:space="preserve"><tspan y="52.407761" x="136.26642" id="tspan3874-0-4-5" sodipodi:role="line">Three</tspan></text>
+    </g>
+    <g style="display:none" inkscape:label="Four - Selected" id="Four-Selected" inkscape:groupmode="layer">
+      <text sodipodi:linespacing="125%" id="text3872-4-2-5-4" y="52.407749" x="203.51642" style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.40000001;stroke-miterlimit:4;stroke-dasharray:none;display:inline;font-family:Arial" xml:space="preserve"><tspan y="52.407749" x="203.51642" id="tspan3874-0-4-5-0" sodipodi:role="line">Four</tspan></text>
+    </g>
+    <g style="display:none" inkscape:label="Five - Selected" id="Five-Selected" inkscape:groupmode="layer">
+      <text sodipodi:linespacing="125%" id="text3872-4-2-5-4-9" y="52.407749" x="260.26642" style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.40000001;stroke-miterlimit:4;stroke-dasharray:none;display:inline;font-family:Arial" xml:space="preserve"><tspan y="52.407749" x="260.26642" id="tspan3874-0-4-5-0-4" sodipodi:role="line">Five</tspan></text>
+    </g>
+  </g>
+  <g style="display:none" inkscape:label="Overlay" id="Overlay" inkscape:groupmode="layer">
+    <rect y="118.44482" x="104.80157" height="173.66399" width="387.19498" id="rect4125" style="fill:#ffffff;fill-opacity:0.91534394;stroke:#000000;stroke-width:0.9685179;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"/>
+    <text sodipodi:linespacing="125%" id="text4127" y="199.91594" x="143.50467" style="font-size:30.97306824px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial" xml:space="preserve"><tspan y="199.91594" x="143.50467" id="tspan4129" sodipodi:role="line">You Pressed a button.</tspan></text>
+    <rect y="238.29877" x="240.45462" height="33.157375" width="105.98937" id="rect4075-7" style="fill:#000000;stroke:#ffffff;stroke-width:0.47664344;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"/>
+    <text sodipodi:linespacing="125%" id="text3899-8-6-9-8-2" y="260.53366" x="282.87265" style="font-size:18.37265205px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;display:inline;font-family:Arial" xml:space="preserve"><tspan y="260.53366" x="282.87265" id="tspan3901-8-1-4-8-4" sodipodi:role="line">OK</tspan></text>
+  </g>
+  <g class="armature-internal" inkscape:groupmode="layer" inkscape:label="Armature" id="ArmatureInfo" style="display:none">
+    <g sodipodi:insensitive="true" class="armature-internal" id="ArmatureUI" inkscape:label="Armature UI" style="display:inline">
+      <rect id="rect4234" y="0" x="0" height="1052.3622" width="744.09448" style="fill:#ffffff"/>
+      <svg sodipodi:docname="armature.ui.svg" inkscape:version="0.48.4 r9939" version="1.1" id="svg2" height="1052.3622" width="744.09448">
+        <sodipodi:namedview inkscape:guide-bbox="true" showguides="true" inkscape:window-maximized="1" inkscape:window-y="-8" inkscape:window-x="1358" inkscape:window-height="1177" inkscape:window-width="1920" showgrid="false" inkscape:current-layer="svg2" inkscape:document-units="px" inkscape:cy="844.70273" inkscape:cx="353.72625" inkscape:zoom="1.4142136" inkscape:pageshadow="2" inkscape:pageopacity="0.0" borderopacity="1.0" bordercolor="#666666" pagecolor="#ffffff" id="namedview4237">
+          <sodipodi:guide id="guide3075" position="26.16295,968.02916" orientation="1,0"/>
+          <sodipodi:guide id="guide3077" position="142.83557,1021.7693" orientation="0,1"/>
+          <sodipodi:guide id="guide3930" position="373.35238,951.05862" orientation="1,0"/>
+        </sodipodi:namedview>
+        <defs id="defs4">
+          <linearGradient id="linearGradient3873">
+            <stop id="stop3875" offset="0" style="stop-color:#000000;stop-opacity:0.44642857;"/>
+            <stop id="stop3877" offset="1" style="stop-color:#000000;stop-opacity:0;"/>
+          </linearGradient>
+        </defs>
+        <metadata id="metadata7">
+          <rdf:RDF>
+            <cc:Work rdf:about="">
+              <dc:format>image/svg+xml</dc:format>
+              <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+              <dc:title/>
+            </cc:Work>
+          </rdf:RDF>
+        </metadata>
+        <g style="display:inline" transform="translate(0,2.172441e-5)" inkscape:groupmode="layer" id="Layer" inkscape:label="Layer"/>
+        <rect inkscape:label="ArmatureRect" y="0.18734282" x="0.70710677" height="368.40262" width="744.58344" id="ArmatureRect" style="fill:#cccccc;fill-opacity:1;stroke:none"/>
+        <text sodipodi:linespacing="125%" id="text8128" y="51.709385" x="25.973013" style="font-size:30.43082809px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#1a1a1a;fill-opacity:1;stroke:none;font-family:Arial" xml:space="preserve"><tspan y="51.709385" x="25.973013" id="tspan8130" sodipodi:role="line">Welcome to Armature</tspan></text>
+        <text sodipodi:linespacing="125%" id="text3071" y="86.138306" x="26.156029" style="font-size:14.74626923px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#4d4d4d;fill-opacity:1;stroke:none;font-family:Arial" xml:space="preserve"><tspan style="font-size:14px" id="tspan3881" y="86.138306" x="26.156029" sodipodi:role="line">Armature allows you to easily create wireframes</tspan><tspan id="tspan4027" style="font-size:14px" y="103.63831" x="26.156029" sodipodi:role="line">from a single Inkscape document.  </tspan><tspan id="tspan5241" style="font-size:14px" y="121.13831" x="26.156029" sodipodi:role="line"/><tspan id="tspan5256" style="font-size:14px" y="138.63831" x="26.156029" sodipodi:role="line">Armature works by turning on and off the visibility  of</tspan><tspan id="tspan5264" style="font-size:14px" y="156.13831" x="26.156029" sodipodi:role="line">layers in your Inkscape document. These groups of </tspan><tspan id="tspan5268" style="font-size:14px" y="173.63831" x="26.156029" sodipodi:role="line">layers, called layer sets, will each be a screen in your</tspan><tspan id="tspan5270" style="font-size:14px" y="191.13831" x="26.156029" sodipodi:role="line">wireframes. </tspan><tspan id="tspan4029" style="font-size:14px" y="208.63831" x="26.156029" sodipodi:role="line"/><tspan id="tspan4306" style="font-size:14px" y="226.13831" x="26.156029" sodipodi:role="line">This layer contains a list of each layer set that has </tspan><tspan id="tspan4429" style="font-size:14px" y="243.63831" x="26.156029" sodipodi:role="line">been created in this document.</tspan><tspan id="tspan4413" style="font-size:14px" y="261.13831" x="26.156029" sodipodi:role="line"/><tspan id="tspan4417" style="font-size:16px;font-weight:bold" y="280.30945" x="26.156029" sodipodi:role="line">You may hide this layer, but if you delete </tspan><tspan id="tspan4039" style="font-size:16px;font-weight:bold" y="300.30945" x="26.156029" sodipodi:role="line">it your  wireframe groups will be lost.</tspan></text>
+        <text sodipodi:linespacing="125%" id="text3918" y="58.170097" x="485.78235" style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial" xml:space="preserve"><tspan y="58.170097" x="485.78235" id="tspan3920" sodipodi:role="line"/></text>
+        <flowRoot transform="matrix(0.82164818,0,0,0.82164818,-31.596489,161.89933)" style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#1a1a1a;fill-opacity:1;stroke:none;font-family:Arial" id="flowRoot3922" xml:space="preserve"><flowRegion id="flowRegion3924"><rect style="fill:#1a1a1a" y="56.755859" x="494.26764" height="19.79899" width="236.88077" id="rect3926"/></flowRegion><flowPara id="flowPara3928">Delete Layer sets</flowPara></flowRoot>        <text sodipodi:linespacing="125%" id="text3932" y="243.69125" x="374.52881" style="font-size:14.78966713px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Arial" xml:space="preserve"><tspan id="tspan3963" style="font-size:11.50307465px" y="243.69125" x="374.52881" sodipodi:role="line">Activate the <tspan id="tspan5090" style="font-weight:bold">Armature</tspan> layer in inkscape, and delete the layer name</tspan><tspan id="tspan5088" style="font-size:11.50307465px" y="258.0701" x="374.52881" sodipodi:role="line">from the list.</tspan></text>
+        <flowRoot style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial" id="flowRoot4041" xml:space="preserve"><flowRegion id="flowRegion4043"><rect y="240.60359" x="35.355339" height="21.213203" width="14.142136" id="rect4045"/></flowRegion><flowPara id="flowPara4047">asdf</flowPara></flowRoot>        <flowRoot style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial" id="flowRoot4289" xml:space="preserve"><flowRegion id="flowRegion4291"><rect y="168.4787" x="107.48023" height="26.162951" width="170.41273" id="rect4293"/></flowRegion><flowPara id="flowPara4295"/></flowRoot>        <flowRoot transform="translate(-120.92887,-20.748714)" style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#1a1a1a;fill-opacity:1;stroke:none;font-family:Arial" id="flowRoot3922-12" xml:space="preserve"><flowRegion id="flowRegion3924-60"><rect style="fill:#1a1a1a" y="56.755859" x="494.26764" height="19.79899" width="236.88077" id="rect3926-4"/></flowRegion><flowPara id="flowPara3928-9">Using Armature</flowPara></flowRoot>        <flowRoot transform="matrix(0.82164818,0,0,0.82164818,-31.59649,65.899329)" style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#1a1a1a;fill-opacity:1;stroke:none;font-family:Arial" id="flowRoot3922-8" xml:space="preserve"><flowRegion id="flowRegion3924-1"><rect style="fill:#1a1a1a" y="56.755859" x="494.26764" height="20.659586" width="430.51477" id="rect3926-2"/></flowRegion><flowPara id="flowPara3928-1">Create or Update Layer sets</flowPara></flowRoot>        <text sodipodi:linespacing="125%" id="text3932-4" y="139.69125" x="374.52881" style="font-size:14.78966713px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Arial" xml:space="preserve"><tspan id="tspan5048" style="font-size:11.50307465px;font-style:oblique;-inkscape-font-specification:Sans Oblique" y="139.69125" x="374.52881" sodipodi:role="line">Armature &gt;  <tspan id="tspan5054" style="font-style:oblique;font-weight:bold;-inkscape-font-specification:Sans Oblique">Create/Update Layer Set</tspan></tspan></text>
+        <text sodipodi:linespacing="125%" id="text3932-4-8" y="75.691254" x="374.52881" style="font-size:14.78966713px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Arial" xml:space="preserve"><tspan id="tspan5048-8" style="font-size:11.50307465px" y="75.691254" x="374.52881" sodipodi:role="line">Amature is can be found in the <tspan id="tspan5084" style="font-weight:bold">Extensions </tspan>menu..  From there you</tspan><tspan id="tspan5086" style="font-size:11.50307465px" y="90.070099" x="374.52881" sodipodi:role="line">will be able to create and update layer sets</tspan></text>
+        <flowRoot transform="matrix(0.82164818,0,0,0.82164818,-31.596489,233.89933)" style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#1a1a1a;fill-opacity:1;stroke:none;font-family:Arial" id="flowRoot3922-4" xml:space="preserve"><flowRegion id="flowRegion3924-5"><rect style="fill:#1a1a1a" y="56.755859" x="494.26764" height="19.79899" width="236.88077" id="rect3926-5"/></flowRegion><flowPara id="flowPara3928-17">Generate wirames</flowPara></flowRoot>        <text sodipodi:linespacing="125%" id="text3932-1" y="331.69125" x="374.52881" style="font-size:14.78966713px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Arial" xml:space="preserve"><tspan id="tspan5088-2" style="font-size:11.50307465px" y="331.69125" x="374.52881" sodipodi:role="line">Generate wireframes will place a HTML file in the folder where you</tspan><tspan id="tspan5231" style="font-size:11.50307465px" y="346.0701" x="374.52881" sodipodi:role="line">created your Inkscape document.  </tspan></text>
+        <text sodipodi:linespacing="125%" id="text3932-4-7" y="307.69125" x="374.52881" style="font-size:14.78966713px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Arial" xml:space="preserve"><tspan id="tspan5048-6" style="font-size:11.50307465px;font-style:oblique;-inkscape-font-specification:Sans Oblique" y="307.69125" x="374.52881" sodipodi:role="line">Armature &gt;  <tspan id="tspan5226" style="font-weight:bold">Generate Wireframes</tspan></tspan></text>
+        <text sodipodi:linespacing="125%" id="text3932-42" y="163.69125" x="374.52881" style="font-size:14.78966713px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#4d4d4d;fill-opacity:1;stroke:none;font-family:Arial" xml:space="preserve"><tspan id="tspan5218" style="font-size:11.50307465px;fill:#4d4d4d" y="163.69125" x="374.52881" sodipodi:role="line">Armature layer sets are created in the Create/Update Layer Set tab</tspan><tspan id="tspan5222" style="font-size:11.50307465px;fill:#4d4d4d" y="178.0701" x="374.52881" sodipodi:role="line">of the Armature extension.  When you create or update a layer set</tspan><tspan id="tspan5224" style="font-size:11.50307465px;fill:#4d4d4d" y="192.44894" x="374.52881" sodipodi:role="line">the states of each layer in your document  are recorded.</tspan></text>
+      </svg>
+    </g>
+    <g class="armature-internal" y="0" id="ArmatureData" inkscape:groupmode="layer" inkscape:label="Armature Data" style="display:inline">
+      <text inkscape:label="on:Site,Page1,Navigation,Menu,One-Selected,Layer;set:Page1;off:Page2,Page3,Page3-ButtonPress,Two-Selected,Three-Selected,Four-Selected,Five-Selected,Overlay" id="ArmatureDataNode-Page1" class="data-node" y="345" x="20" style="font-size:20px;font-weight:bold">Page1</text>
+      <text style="font-size:20px;font-weight:bold" x="20" y="380" class="data-node" id="ArmatureDataNode-Page2" inkscape:label="on:Site,Page2,Navigation,Menu,Two-Selected,Layer;set:Page2;off:Page1,Page3,Page3-ButtonPress,One-Selected,Three-Selected,Four-Selected,Five-Selected,Overlay">Page2</text>
+      <text inkscape:label="on:Site,Page3,Navigation,Menu,Three-Selected,Layer;set:Page3;off:Page2,Page1,Page3-ButtonPress,One-Selected,Two-Selected,Four-Selected,Five-Selected,Overlay" id="ArmatureDataNode-Page3" class="data-node" y="415" x="20" style="font-size:20px;font-weight:bold">Page3</text>
+      <text style="font-size:20px;font-weight:bold" x="20" y="450" class="data-node" id="ArmatureDataNode-Page3-pressed" inkscape:label="on:Site,Page3,Navigation,Menu,Three-Selected,Overlay,Layer;set:Page3-pressed;off:Page2,Page1,Page3-ButtonPress,One-Selected,Two-Selected,Four-Selected,Five-Selected">Page3-pressed</text>
+    </g>
+  </g>
+</svg>
+  </div>
+ 
+</body>
+</html>
