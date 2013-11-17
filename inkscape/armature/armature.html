@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{#wireframesTitle}</title>
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+ <script>
+ {#armatureJs}
+ </script>
+  
+ <style>
+	.svgFrame{width:100%;height:100%;}
+ </style>
+ <script>
+	var armature;
+	$( function()
+	   {
+			armature= new Armature( {svgElement: $('#container svg') } );
+	   });
+ </script>
+ 
+ 
+</head>
+
+
+<body>
+  <div id="container">
+  {#svg}
+  </div>
+ 
+</body>
+</html>
