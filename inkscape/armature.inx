@@ -13,7 +13,10 @@
 	   <page name='activeLayerSetPage' _gui-text="Activate Layer Set">
 			<param name="activeLayerSet" type="string" _gui-text="Layer Set Name"></param>
 	   </page>
- 
+ 	   <page name='generateWireframes' _gui-text="Generate Wire Frames">
+			<param name="wireframesTitle" type="string" _gui-text="Title"></param>
+			<param name="fileName" type="string" _gui-text="File Name"></param>
+	   </page>
 	</param>	
     <effect needs-live-preview="false">
 		<object-type>all</object-type>

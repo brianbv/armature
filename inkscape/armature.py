@@ -12,6 +12,13 @@ ArmatureSubTitleStyle = { 'font-family' : 'arial', 'font-size' : '18pt','font-st
 ArmatureRowLabelStyle = {'font-size': '16pt', 'font-weight' : 'bold'}
 ArmatureBold = {'font-weight':'bold'}
 
+def readToEnd(fileName):
+	stream = open(fileName ,"r")
+	data = stream.read()
+	stream.close()
+	return data
+
+
 class Armature(inkex.Effect):
 	def __init__(self):
 		inkex.Effect.__init__(self)
@@ -28,6 +35,8 @@ class Armature(inkex.Effect):
 		self.OptionParser.add_option("",   "--newLayerSet", action="store", type="string", dest="newLayerSet", default="",	help="Creates new layer set.")
 		self.OptionParser.add_option("",   "--activeLayerSet", action="store", type="string", dest="activeLayerSet", default="",	help="Sets active layer set.")
 		
+		self.OptionParser.add_option("",   "--wireframesTitle", action="store", type="string", dest="wireframesTitle", default="",	help="Sets the title of the page.")
+		self.OptionParser.add_option("",   "--fileName", action="store", type="string", dest="fileName", default="",	help="Filename to be generated.")
 	def effect(self):
 		#inkex.errormsg('SVG FILE: %s' % self.svg_file)		
 		#outfile = os.path.join(os.path.dirname(self.svg_file), 'stuff.html')		
@@ -42,15 +51,36 @@ class Armature(inkex.Effect):
 		self.activeTab =  str(self.options.active_tab).replace('"','') 
 		if self.activeTab=='createLayerSetPage':
 			self.startRendering()
+		elif self.activeTab=='generateWireframes':
+			#read HTML file
+			svg = self.document.getroot()
+		
+			htmlData = readToEnd(os.path.join('armature','armature.html'))			
+			jsData =  readToEnd( os.path.join('armature','armature.js'))
+			
+			dirName = os.path.dirname(self.svg_file)
+			outfile =  os.path.join(dirName, self.options.fileName)
+			stream =  open(outfile,"w");
+			
+			htmlData = htmlData.replace('{#wireframesTitle}','Armature Wireframes HTML wrapper') \
+							   .replace('{#armatureJs}',jsData) \
+							   .replace('{#svg}',inkex.etree.tostring(svg) ) \
+	 
+			stream.write( htmlData )
+			stream.close()
+			inkex.errormsg('Wireframes generated.  You can find them here: \n %s' % outfile  )
 		elif not(self.options.activeLayerSet is None):
 			layerSetId=self.options.activeLayerSet
-			self.armatureLayer = self.getElementById('ArmatureData')
-			dataNodes=self.armatureLayer.xpath('//*[@class="data-node %s"]' % layerSetId)
-			#track down those data notes, then toggle them
-			for dataNode in dataNodes:
-				 data=parseStyle( dataNode.get( inkex.addNS('label', 'inkscape')) )
-				 layers =  dataNode.text.split(',')
-				 self.toggleLayers(layers,data['state']=='on')
+		 
+			dataNode = self.getElementById('ArmatureDataNode-%s' % layerSetId )
+			
+			if (dataNode is None):
+				inkex.errormsg('Layerset %s does not exist.' % layerSetId)
+			else:
+				layerStates=parseStyle( dataNode.get( inkex.addNS('label', 'inkscape')) )
+				self.toggleLayers(layerStates['on'].split(','),True)
+				self.toggleLayers(layerStates['off'].split(','),False)
+			
 		else:
 			inkex.errormsg('Please enter a layerset name to select.')
 	 
@@ -147,6 +177,7 @@ class Armature(inkex.Effect):
 		title.set('x', '20' )
 		title.set('y', str(self.cursorY))
 		title.set('class','data-node')
+		title.set('id', 'ArmatureDataNode-%s' % layerSetId)
 		 # title.get('height')
 		title.text=layerSetId
 		style ={'set':layerSetId, 'on': ','.join(layerGroup['on']), 'off' : ','.join(layerGroup['off'])}
